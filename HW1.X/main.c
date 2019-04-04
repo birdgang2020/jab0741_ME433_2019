@@ -1,3 +1,10 @@
+/* 
+ * File:   main.c
+ * Author: jbera
+ *
+ * Created on April 4, 2019, 12:54 PM
+ */
+
 #include<xc.h>           // processor SFR definitions
 #include<sys/attribs.h>  // __ISR macro
 
@@ -54,9 +61,9 @@ int main() {
     DDPCONbits.JTAGEN = 0;
 
     // do your TRIS and LAT commands here
-    TRISBbits.TRISB4=1
-    TRISAbits.TRISA4=0
-    LATAbits.LATA4=1
+    TRISBbits.TRISB4=1;
+    TRISAbits.TRISA4=0;
+    LATAbits.LATA4=1;
     __builtin_enable_interrupts();
 
     while(1) {
@@ -64,3 +71,5 @@ int main() {
 	// remember the core timer runs at half the sysclk
     }
 }
+
+
