@@ -10,27 +10,27 @@
 #pragma config CP = 1 // no code protect
 
 // DEVCFG1
-#pragma config FNOSC = x // use primary oscillator with pll
-#pragma config FSOSCEN = x // turn off secondary oscillator
-#pragma config IESO = x // no switching clocks
-#pragma config POSCMOD = x // high speed crystal mode
-#pragma config OSCIOFNC = x // disable secondary osc
-#pragma config FPBDIV = x // divide sysclk freq by 1 for peripheral bus clock
-#pragma config FCKSM = x // do not enable clock switch
-#pragma config WDTPS = x // use slowest wdt
-#pragma config WINDIS = x // wdt no window mode
-#pragma config FWDTEN = x // wdt disabled
-#pragma config FWDTWINSZ = x // wdt window at 25%
+#pragma config FNOSC = 0x3 // use primary oscillator with pll
+#pragma config FSOSCEN = 0 // turn off secondary oscillator
+#pragma config IESO = 0 // no switching clocks
+#pragma config POSCMOD = 0 // high speed crystal mode
+#pragma config OSCIOFNC = 1 // disable secondary osc
+#pragma config FPBDIV = 0x0 // divide sysclk freq by 1 for peripheral bus clock
+#pragma config FCKSM = 0x2 // do not enable clock switch
+#pragma config WDTPS = 0x14 // use slowest wdt
+#pragma config WINDIS = 1 // wdt no window mode
+#pragma config FWDTEN = 0 // wdt disabled
+#pragma config FWDTWINSZ = 0x3 // wdt window at 25%
 
 // DEVCFG2 - get the sysclk clock to 48MHz from the 8MHz crystal
-#pragma config FPLLIDIV = x // divide input clock to be in range 4-5MHz
-#pragma config FPLLMUL = x // multiply clock after FPLLIDIV
-#pragma config FPLLODIV = x // divide clock after FPLLMUL to get 48MHz
-#pragma config UPLLIDIV = x // divider for the 8MHz input clock, then multiplied by 12 to get 48MHz for USB
-#pragma config UPLLEN = x // USB clock on
+#pragma config FPLLIDIV = 1 // divide input clock to be in range 4-5MHz
+#pragma config FPLLMUL = 0x7 // multiply clock after FPLLIDIV
+#pragma config FPLLODIV = 0x1 // divide clock after FPLLMUL to get 48MHz
+#pragma config UPLLIDIV = 0x1 // divider for the 8MHz input clock, then multiplied by 12 to get 48MHz for USB
+#pragma config UPLLEN = 0 // USB clock on
 
 // DEVCFG3
-#pragma config USERID = 0 // some 16bit userid, doesn't matter what
+#pragma config USERID = 0x257F // some 16bit userid, doesn't matter what
 #pragma config PMDL1WAY = x // allow multiple reconfigurations
 #pragma config IOL1WAY = x // allow multiple reconfigurations
 #pragma config FUSBIDIO = x // USB pins controlled by USB module
