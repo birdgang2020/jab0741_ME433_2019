@@ -12000,22 +12000,16 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 <pin name="32.TDO0/RA8" x="76.2" y="-2.54" length="middle" rot="R180"/>
 <pin name="33.RB4" x="76.2" y="2.54" length="middle" rot="R180"/>
 <pin name="34.RA4" x="58.42" y="10.16" length="middle" rot="R270"/>
-<pin name="35.RA9" x="53.34" y="10.16" length="middle" rot="R270"/>
-<pin name="36.RC3" x="48.26" y="10.16" length="middle" rot="R270"/>
-<pin name="37.RC4" x="43.18" y="10.16" length="middle" rot="R270"/>
-<pin name="38.RC5" x="38.1" y="10.16" length="middle" rot="R270"/>
-<pin name="39.VSS" x="33.02" y="10.16" length="middle" rot="R270"/>
-<pin name="40.VDD" x="27.94" y="10.16" length="middle" rot="R270"/>
-<pin name="41.RB5" x="22.86" y="10.16" length="middle" rot="R270"/>
-<pin name="42.VBUS" x="17.78" y="10.16" length="middle" rot="R270"/>
-<pin name="43.RB7" x="12.7" y="10.16" length="middle" rot="R270"/>
-<pin name="44.RB8" x="7.62" y="10.16" length="middle" rot="R270"/>
-<wire x1="-2.54" y1="7.62" x2="-2.54" y2="-55.88" width="0.254" layer="94"/>
-<wire x1="-2.54" y1="-55.88" x2="73.66" y2="-55.88" width="0.254" layer="94"/>
-<wire x1="73.66" y1="-55.88" x2="73.66" y2="7.62" width="0.254" layer="94"/>
-<wire x1="73.66" y1="7.62" x2="-2.54" y2="7.62" width="0.254" layer="94"/>
-<text x="40.64" y="-10.16" size="1.778" layer="94">&gt;NAME</text>
-<text x="40.64" y="-15.24" size="1.778" layer="94">&gt;VALUE</text>
+<pin name="P$35" x="53.34" y="10.16" length="middle" rot="R270"/>
+<pin name="P$36" x="48.26" y="10.16" length="middle" rot="R270"/>
+<pin name="P$37" x="43.18" y="10.16" length="middle" rot="R270"/>
+<pin name="P$38" x="38.1" y="10.16" length="middle" rot="R270"/>
+<pin name="P$39" x="33.02" y="10.16" length="middle" rot="R270"/>
+<pin name="P$40" x="27.94" y="10.16" length="middle" rot="R270"/>
+<pin name="P$41" x="22.86" y="10.16" length="middle" rot="R270"/>
+<pin name="P$42" x="17.78" y="10.16" length="middle" rot="R270"/>
+<pin name="P$43" x="12.7" y="10.16" length="middle" rot="R270"/>
+<pin name="P$44" x="7.62" y="10.16" length="middle" rot="R270"/>
 </symbol>
 </symbols>
 <devicesets>
