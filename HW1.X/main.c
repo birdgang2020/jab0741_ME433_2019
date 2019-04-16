@@ -71,10 +71,10 @@ int main() {
 	// remember the core timer runs at half the sysclk
             _CP0_SET_COUNT(0);
             LATAbits.LATA4=1;
-            if(_CP0_GET_COUNT()==400000){
+            if(_CP0_GET_COUNT()>400000 && _CP0_GET_COUNT()<800000 ){
                 LATAbits.LATA4=0;
             }
-            if(_CP0_GET_COUNT()==800000){
+            if(_CP0_GET_COUNT()>800000){
                 LATAbits.LATA4=1;
                 _CP0_SET_COUNT(0);
             }
