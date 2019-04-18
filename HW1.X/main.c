@@ -64,19 +64,20 @@ int main() {
     // do your TRIS and LAT commands here
     TRISBbits.TRISB4=1;
     TRISAbits.TRISA4=0;
-    LATAbits.LATA4=1;
+    LATAbits.LATA4=0;
     __builtin_enable_interrupts();
+    _CP0_SET_COUNT(0);
         while(1) {
 	// use _CP0_SET_COUNT(0) and _CP0_GET_COUNT() to test the PIC timing
 	// remember the core timer runs at half the sysclk
-            _CP0_SET_COUNT(0);
-            LATAbits.LATA4=1;
-            if(_CP0_GET_COUNT()>400000 && _CP0_GET_COUNT()<800000 ){
+            while(PORTBbits.RB4 !=0){
+            if(_CP0_GET_COUNT()>24000 && _CP0_GET_COUNT()<48000 ){
                 LATAbits.LATA4=0;
             }
-            if(_CP0_GET_COUNT()>800000){
+            if(_CP0_GET_COUNT()>48000){
                 LATAbits.LATA4=1;
                 _CP0_SET_COUNT(0);
+            }
             }
             
     }
