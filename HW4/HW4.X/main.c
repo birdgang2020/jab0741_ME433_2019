@@ -15,7 +15,7 @@
 int main(int argc, char** argv) {
     RPB14Rbits.RPB14R = 0b; //Set B14 to SCK1
     RPB11Rbits.RPB11R = 0b0011; //Set B11 to SDO1
-    SS1bits.SS1R=0b0001l;//B3 to SS1
+    RPB3bits.RPB3R=0b001l;//B3 to SS1
     SDI1bits.SDI1R = 0b0010; //Set A4 to SDI4
     
             
