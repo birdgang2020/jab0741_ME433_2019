@@ -55,12 +55,12 @@ void initSPI1(){
     RPB3bits.RPB3R=0b001l;//B3 to SS1
     SDI1bits.SDI1R = 0b0010; //Set A4 to SDI4
 
-    SPICON=0;
+    SPICON=0; //Set everything to 0
     SPIBUF;
     SPIBRG=1;
-    SPICONbits.MSTEN=1;
-    SPICONbits.CKE=1;
-    SPICONbits.ON=1;
+    SPICONbits.MSTEN=1; //Enable master mode on the PIC
+    SPICONbits.CKE=1;//Serial output changes on transition from active clock state to Idle clock state
+    SPICONbits.ON=1;//Turn on SPI
 
     LATBbits.LATB3=1;
 }
