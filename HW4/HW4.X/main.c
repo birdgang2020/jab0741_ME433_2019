@@ -45,8 +45,16 @@
 #pragma config FUSBIDIO = ON // USB pins controlled by USB module
 #pragma config FVBUSONIO = ON // USB BUSON controlled by USB module
 
+
 void setVoltage(char channel, int voltage){
-    
+    short bits = (channel << 15 | 0b1 << 14 | 0b1 <<13 | 0b1 << 12 | (v & 1023) << 2);
+    LATBbits.LATB3=0;
+    while(!SPI1STATbits.SPIRBF){
+        ;
+    }
+    SPI1BUF=(bits& 0xFF00) >> 8);
+    SPI1BUF=(bits & 0x00FF);
+    LATBbits.LATB3=0;
 }
 
 void initSPI1(){
@@ -64,6 +72,8 @@ void initSPI1(){
 
     LATBbits.LATB3=1;
 }
+
+
 
 
 int main(int argc, char** argv) {
@@ -94,7 +104,24 @@ int main(int argc, char** argv) {
 
     _CPO_SET_COUNT(0);
     
-
+    int i = 0;
+    
+    while(1) {
+        _CP0_SET_COUNT(0);       
+        setVoltage(0, 512 + 512.0*sin(i*2.0*3.14/100));
+            
+        
+        if (i%200 < 100) {
+            setVoltage(1,(int)((float) (i%200) / 100 * 1023));
+        }
+        else {
+            setVoltage(1, (int) ((float)(200- i%200) / 100 * 1023));         
+        }
+        i++;    
+        while(_CP0_GET_COUNT() < 24000){
+        ; //do nothing
+        }
+    }
             
     return (EXIT_SUCCESS);
 }
