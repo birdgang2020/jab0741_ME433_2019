@@ -2,13 +2,11 @@
  * File:   main.c
  * Author: jbera
  *
- * Created on May 16, 2019, 12:26 AM
+ * Created on May 24, 2019, 7:29 PM
  */
-
-#include <stdio.h>
-#include <stdlib.h>
 #include<xc.h>           // processor SFR definitions
 #include<sys/attribs.h>  // __ISR macro
+#include <math.h>
 
 // DEVCFG0
 #pragma config DEBUG = OFF // no debugging
@@ -39,44 +37,50 @@
 #pragma config UPLLEN = ON // USB clock on
 
 // DEVCFG3
-#pragma config USERID = 0x257F // some 16bit userid, doesn't matter what
+#pragma config USERID = 0741 // some 16bit userid, doesn't matter what. Also Ayy Lmao
 #pragma config PMDL1WAY = OFF // allow multiple reconfigurations
 #pragma config IOL1WAY = OFF // allow multiple reconfigurations
 #pragma config FUSBIDIO = ON // USB pins controlled by USB module
 #pragma config FVBUSONIO = ON // USB BUSON controlled by USB module
 
 
-void setVoltage(char channel, int voltage){
-    short bits = (channel << 15 | 0b1 << 14 | 0b1 <<13 | 0b1 << 12 | (v & 1023) << 2);
-    LATBbits.LATB3=0;
-    while(!SPI1STATbits.SPIRBF){
-        ;
+
+void initSPI1() {
+
+    RPB13Rbits.RPB13R = 0b0011; //B13 is SDO1
+    TRISBbits.TRISB3 = 0; //B3 is CS, B14 is SCK1
+    //LATBbits.LATB3 = 0; //pull low to send data
+     RPB13Rbits.RPB13R = 0b0011; //B13 is SDO1
+    TRISBbits.TRISB3 = 0; //B15 is CS, B14 is SCK1
+    SPI1CON = 0;
+    SPI1BUF;
+    SPI1BRG = 1;
+    SPI1CONbits.CKE = 1;
+    SPI1CONbits.MSTEN = 1;
+    SPI1CONbits.ON = 1;
+    
+    LATBbits.LATB3 = 0;  //pull low to send data
+    
+}
+
+
+char SPI1_IO(char c) {
+    SPI1BUF = c;
+    while(!SPI1STATbits.SPIRBF) {
+        ;//do nothing but wait.
     }
-    SPI1BUF=(bits& 0xFF00) >> 8);
-    SPI1BUF=(bits & 0x00FF);
-    LATBbits.LATB3=0;
+    return SPI1BUF; //return bit you get back
 }
 
-void initSPI1(){
-    RPB14Rbits.RPB14R = 0b; //Set B14 to SCK1
-    RPB11Rbits.RPB11R = 0b0011; //Set B11 to SDO1
-    RPB3bits.RPB3R=0b001l;//B3 to SS1
-    SDI1bits.SDI1R = 0b0010; //Set A4 to SDI4
-
-    SPICON=0; //Set everything to 0
-    SPIBUF;
-    SPIBRG=1;
-    SPICONbits.MSTEN=1; //Enable master mode on the PIC
-    SPICONbits.CKE=1;//Serial output changes on transition from active clock state to Idle clock state
-    SPICONbits.ON=1;//Turn on SPI
-
-    LATBbits.LATB3=1;
+void setVoltage(char ch, int v) {
+    short temp = (ch << 15 | 0b1 << 14 | 0b1 <<13 | 0b1 << 12 | (v & 1023) << 2); //makes 0bx111(voltage)xx
+    LATBbits.LATB3 = 0; //start write
+    SPI1_IO((temp & 0xFF00) >> 8); //write first  bits
+    SPI1_IO(temp & 0x00FF); //write second 8 bits
+    LATBbits.LATB3 = 1; 
 }
 
-
-
-
-int main(int argc, char** argv) {
+int main() {
 
     __builtin_disable_interrupts();
 
@@ -91,18 +95,21 @@ int main(int argc, char** argv) {
 
     // disable JTAG to get pins back
     DDPCONbits.JTAGEN = 0;
-    ANSELB = 0;
-    ANSELA = 0;
+
     // do your TRIS and LAT commands here
-    //TRISBbits.TRISB4=1;
-    //TRISAbits.TRISA4=0;
-    //LATAbits.LATA4=0;
-
+    //Set TRIS register to declare I/O, 0 is output, 1 is input.
+    TRISAbits.TRISA4 = 0;   //Declare RA4 (LED) as output
+    TRISBbits.TRISB4 = 1;   //Declare RB4 (Push Button)
+    //Note: Pins should already default to input, so above line may be unneccesary 
+    
+    
     initSPI1();
+ 
+    
+    __builtin_enable_interrupts();
 
-    __builtin_enable_interrupts();    
-
-    _CPO_SET_COUNT(0);
+    //Set PIC32 internal clock to 0
+    _CP0_SET_COUNT(0);
     
     int i = 0;
     
@@ -119,10 +126,8 @@ int main(int argc, char** argv) {
         }
         i++;    
         while(_CP0_GET_COUNT() < 24000){
-        ; //do nothing
+        ; //do nada
         }
     }
-            
-    return (EXIT_SUCCESS);
 }
 
