@@ -1,3 +1,7 @@
+#include<xc.h>           // processor SFR definitions
+#include<sys/attribs.h>  // __ISR macro
+#include <math.h>
+
 void i2c_master_setup(void) {
   I2C2BRG =  0x1A;          // I2CBRG = [1/(2*Fsck) - PGD]*Pblck - 2 
                                     // look up PGD for your PIC32

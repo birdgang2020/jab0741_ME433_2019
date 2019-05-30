@@ -16,10 +16,15 @@ void initExpander(){
     i2c_master_setup();
 }
 void setExpander(char pin,char level){
-    
+    i2c_master_start();
+    i2c_master_send(0b0100000<<1|0);
+    i2c_master_send(pin);
+    i2c_master_send(level);
+    i2c_master_stop;
 }
 char getExpander(){
-    
+    i2c_master_start();
+    i2c_master_send();
 }
 int main() {
 
