@@ -27,6 +27,8 @@ char getExpander(){
     i2c_master_send(0b0100000<<1|0);
     i2c_master_send(0x9);
     i2c_master_restart();
+    i2c_master_send(0b0100000<<1|1);
+    
 }
 int main() {
 
