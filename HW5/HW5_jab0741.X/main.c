@@ -34,6 +34,48 @@ char getExpander(){
     return r;
 }
 int main() {
+    
+    __builtin_disable_interrupts();
 
+    // set the CP0 CONFIG register to indicate that kseg0 is cacheable (0x3)
+    __builtin_mtc0(_CP0_CONFIG, _CP0_CONFIG_SELECT, 0xa4210583);
+
+    // 0 data RAM access wait states
+    BMXCONbits.BMXWSDRM = 0x0;
+
+    // enable multi vector interrupts
+    INTCONbits.MVEC = 0x1;
+
+    // disable JTAG to get pins back
+    DDPCONbits.JTAGEN = 0;
+
+    // do your TRIS and LAT commands here
+    //Set TRIS register to declare I/O, 0 is output, 1 is input.
+    TRISAbits.TRISA4 = 0;   //Declare RA4 (LED) as output
+    TRISBbits.TRISB4 = 1;   //Declare RB4 (Push Button)
+    //Note: Pins should already default to input, so above line may be unneccesary 
+    
+    initExpander();
+    
+    i2c_master_start();
+    i2c_master_send(0b0100000 << 1 | 0);
+    i2c_master_send(0x00);
+    i2c_master_send(0xF0);
+    i2c_master_stop();
+    
+    i2c_master_start();
+    i2c_master_send(0b0100000 << 1 | 0);
+    i2c_master_send(0x0A);
+    i2c_master_send(0x0F);
+    i2c_master_stop();
+    
+    while(1){
+        if(getExpander() >>7 ==1){
+        setExpander(0x,1);    
+        
+    }
+        else{
+            setExpander(0x,0)
+        }
 }
 
