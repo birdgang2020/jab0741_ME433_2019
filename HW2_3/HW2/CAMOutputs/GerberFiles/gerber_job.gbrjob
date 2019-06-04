@@ -1,0 +1,24 @@
+{
+    "Header": {
+        "Comment": "All values are metric (mm)",
+        "CreationDate": "2019-06-04T22:41:37Z",
+        "GenerationSoftware": {
+            "Application": "EAGLE",
+            "Vendor": "Autodesk",
+            "Version": "9.3.0"
+        },
+        "Part": "Single"
+    },
+    "Overall": {
+        "BoardThickness": 1.57,
+        "LayerNumber": 2,
+        "Name": {
+            "ProjectId": "HW2_schematic"
+        },
+        "Owner": "Jacob Beran <jacobberan2020@u.northwestern.edu>",
+        "Size": {
+            "X": 100,
+            "Y": 100
+        }
+    }
+}
