@@ -64,16 +64,16 @@ int main() {
     TRISAbits.TRISA4=0;
     LATAbits.LATA4=0;
     
-
-
-    LCD_init();
-    
         while(1){
             if (_CP0_GET_COUNT() >24000000){
         _CP0_SET_COUNT(0);
         LATAbits.LATA4= !LATAbits.LATA4;
         }
     }
+
+    LCD_init();
+    
+
     
     LCD_clearScreen(0x0000);
     LCD_drawPixel(100,100,ILI9341_BLACK);
