@@ -64,27 +64,23 @@ int main() {
     TRISAbits.TRISA4=0;
     LATAbits.LATA4=0;
     
-        while(1){
-            if (_CP0_GET_COUNT() >24000000){
-        _CP0_SET_COUNT(0);
-        LATAbits.LATA4= !LATAbits.LATA4;
-        }
-    }
-    
+
+    SPI1_init();
     LCD_init();
-    
-    
-    
+    __builtin_enable_interrupts();
+    LATAbits.LATA4=1;
+  
     LCD_clearScreen(0x0000);
-    LCD_drawPixel(100,100,ILI9341_BLACK);
-    char message[26];
-    sprintf(message, "Hello World");
-    LCD_print_string(35, 65, message, 0xFFFF, 0x0000);
-    
+    char c = "x";
+    LCD_print_letter(35, 65,c , ILI9341_WHITE, ILI9341_BLACK);
+    //char message[26];
+    //sprintf(message, "Hello World");
+    //LCD_print_string(35, 65, message, ILI9341_WHITE, ILI9341_BLACK);
+          /*
     LCD_progress_bar(20, 100, 88, 10, ILI9341_WHITE);
     LCD_progress_bar(21, 101, 86, 8, ILI9341_BLACK);
-    
-    __builtin_enable_interrupts();
+
+
 
     //Set PIC32 internal clock to 0
     _CP0_SET_COUNT(0);
