@@ -70,10 +70,10 @@ int main() {
         LATAbits.LATA4= !LATAbits.LATA4;
         }
     }
-
+    
     LCD_init();
     
-
+    
     
     LCD_clearScreen(0x0000);
     LCD_drawPixel(100,100,ILI9341_BLACK);
