@@ -74,25 +74,33 @@ int main() {
     LCD_clearScreen(ILI9341_WHITE);
 
    char message[26];
-   sprintf(message, "Hello World");
-   LCD_print_string(28, 50, message, ILI9341_BLACK, ILI9341_WHITE);
-   //White bar won't go away on my LCD so displaying "Hello World" slightly lower
+   int my_int=10;
+
+
    
    int count=0;
    u_int last_tick=0;
    u_int current_tick=0;
 
    while(1){
+       sprintf(message, "Hello World %d",my_int);
+       LCD_print_string(28, 50, message, ILI9341_BLACK, ILI9341_WHITE);
+          //White bar won't go away on my LCD so displaying "Hello World" slightly lower
      if(count<86){
-         LCD_progress_bar(28+count,70,1,8,ILI9341_PURPLE);
+         LCD_progress_bar(28+count,70,my_int,8,ILI9341_PURPLE);
      }
      current_tick=_CP0_GET_COUNT();
-   
+     if(current_tick % 10 ==9){
         sprintf(message, "fps:%g", 24000000/((float)current_tick - last_tick));
         LCD_print_string(40,150, message, ILI9341_BLACK, ILI9341_WHITE );
+     }
         last_tick = current_tick;
         
-        if (_CP0_GET_COUNT() > 2400000){
+        if (_CP0_GET_COUNT() > 480000){
+            if(my_int<100){
+                my_int+=1;
+                
+            }
             _CP0_SET_COUNT(0);
             LATAINV = 0b10000;
             count++;
