@@ -15,14 +15,13 @@
  * 
  */
 void LCD_print_letter(short x,short y,char letter,char color1,char color2 ){
-    letter=letter=0x20;
+    letter=letter - 0x20;
     int i=0;
     for(i;i<5;i++){
         char col=ASCII[letter][i];
         int j=0;
         for(j;j<8;j++){
-            char current_bit=(col>>j & 1);
-            if (current_bit==1){
+            if ((col >> j & 1) == 1){
                 LCD_drawPixel(x+i,y+j,color1);
             }
             else{LCD_drawPixel(x+i,y+j,color2);
@@ -31,11 +30,13 @@ void LCD_print_letter(short x,short y,char letter,char color1,char color2 ){
     }
 }
 void LCD_print_string(short x,short y,char* str,char color1,char color2){
+
     int j=0;
-    while((str[j] &&j )<26){
+    while(str[j] && j <26){
         LCD_print_letter(x+j*5,y,str[j],color1,color2);
         j++;
     }
+
 }
 void LCD_progress_bar(short x,short y,short length,short height,char color){
     int i=0,j=0;
@@ -70,45 +71,35 @@ int main() {
     __builtin_enable_interrupts();
     LATAbits.LATA4=1;
   
-    LCD_clearScreen(0x0000);
-    char c = "x";
-    LCD_print_letter(35, 65,c , ILI9341_WHITE, ILI9341_BLACK);
-    //char message[26];
-    //sprintf(message, "Hello World");
-    //LCD_print_string(35, 65, message, ILI9341_WHITE, ILI9341_BLACK);
-          /*
-    LCD_progress_bar(20, 100, 88, 10, ILI9341_WHITE);
-    LCD_progress_bar(21, 101, 86, 8, ILI9341_BLACK);
+    LCD_clearScreen(ILI9341_WHITE);
 
+   char message[26];
+   sprintf(message, "Hello World");
+   LCD_print_string(28, 50, message, ILI9341_BLACK, ILI9341_WHITE);
+   //White bar won't go away on my LCD so displaying "Hello World" slightly lower
+   
+   int count=0;
+   u_int last_tick=0;
+   u_int current_tick=0;
 
-
-    //Set PIC32 internal clock to 0
-    _CP0_SET_COUNT(0);
-    /*
-    int count=0;
-    u_int last_tick=0;
-    u_int current_tick=0;
-    while(1){
-        
-        if(count<86){
-            LCD_progress_bar(18+count,100,1,8,ILI9341_RED);
-        }
-        current_tick=_CP0_GET_COUNT();
+   while(1){
+     if(count<86){
+         LCD_progress_bar(28+count,70,1,8,ILI9341_PURPLE);
+     }
+     current_tick=_CP0_GET_COUNT();
+   
         sprintf(message, "fps:%g", 24000000/((float)current_tick - last_tick));
-        LCD_print_string(1,1,message,ILI9341_WHITE,ILI9341_BLACK);
-        last_tick=current_tick;
-         
-            if (_CP0_GET_COUNT() >24000000){
+        LCD_print_string(40,150, message, ILI9341_BLACK, ILI9341_WHITE );
+        last_tick = current_tick;
+        
+        if (_CP0_GET_COUNT() > 2400000){
             _CP0_SET_COUNT(0);
-            LATAbits.LATA4= !LATAbits.LATA4;
+            LATAINV = 0b10000;
             count++;
             last_tick = 0;
         }
-    }
-     * */
-     
-    
-    
+   }
+
     return (EXIT_SUCCESS);
 }
 
