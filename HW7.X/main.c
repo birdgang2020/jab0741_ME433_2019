@@ -30,23 +30,31 @@ void initExpander(){
 
 void setExpander(char pin,char level){
     i2c_master_start();
-    i2c_master_send(0b0100000<<1|0);
+    i2c_master_send(0b1101011<<1|0);
     i2c_master_send(pin);
     i2c_master_send(level);
     i2c_master_stop();
 }
 
+
 unsigned char getExpander(){
     i2c_master_start();
-    i2c_master_send(0b0100000<<1|0);
-    i2c_master_send(0x9);
+    i2c_master_send(0b1101011<<1|0);
+    i2c_master_send(0x0F);
     i2c_master_restart();
-    i2c_master_send(0b0100000<<1|1);
+    i2c_master_send(0b1101011<<1|1);
     unsigned char r = i2c_master_recv();
     i2c_master_ack(1);
     i2c_master_stop();
     return r;
 }
+
+void I2CmultipleRead(unsigned char add, unsigned char reg, unsigned char* data, int length){
+    i2c_master_start();
+    i2c_master_send(0b1101011<<1|0);
+    i2c_master_send(reg);
+    i2c_master_restart();
+} 
 
 
 //FROM HW6
