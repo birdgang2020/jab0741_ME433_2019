@@ -54,6 +54,16 @@ void I2CmultipleRead(unsigned char add, unsigned char reg, unsigned char* data, 
     i2c_master_send(0b1101011<<1|0);
     i2c_master_send(reg);
     i2c_master_restart();
+    i2c_master_send(0b1101011<<1|1);
+    int i=0;
+    while(i< (length-1)){
+        data[i]=i2c_master_recv();
+        i2c_master_ack();
+        i++;
+    }
+    data[i]=i2c_master_recv();
+    i2c_master_ack();
+    i2c_master_stop();
 } 
 
 
@@ -117,39 +127,43 @@ int main() {
   
     LCD_clearScreen(ILI9341_WHITE);
 
+    
+    
+    initExpander();
+    
+    setExpander(0x10,0b10000010); //set up accelarometer
+    setExpander(0x11,0b10001000);  //set all outputs as high
+    setExpander(0x12,0b00000100);
+    
    char message[26];
    int my_int=10;
-
-
+   unsigned char rawData[14];
+   short data[7];
    
-   int count=0;
-   u_int last_tick=0;
-   u_int current_tick=0;
+   
+   LCD_progress_bar(14, 87, 100, 6,ILI9341_PURPLE );
+    LCD_progress_bar(22, 150, 100, 6,ILI9341_RED );
+    LCD_progress_bar(30,200,100,6,ILI9341_BLUE);
+    int horiz;
+    int vert;
 
    while(1){
-       sprintf(message, "Hello World %d",my_int);
-       LCD_print_string(28, 50, message, ILI9341_BLACK, ILI9341_WHITE);
-          //White bar won't go away on my LCD so displaying "Hello World" slightly lower
-     if(count<86){
-         LCD_progress_bar(28+count,70,my_int,8,ILI9341_PURPLE);
-     }
-     current_tick=_CP0_GET_COUNT();
-     if(current_tick % 10 ==9){
-        sprintf(message, "fps:%g", 24000000/((float)current_tick - last_tick));
-        LCD_print_string(40,150, message, ILI9341_BLACK, ILI9341_WHITE );
-     }
-        last_tick = current_tick;
-        
-        if (_CP0_GET_COUNT() > 480000){
-            if(my_int<100){
-                my_int+=1;
-                
-            }
-            _CP0_SET_COUNT(0);
-            LATAINV = 0b10000;
-            count++;
-            last_tick = 0;
-        }
+       if(getExpander() != 0x69 ){
+           sprintf(message,"Not reading who am i")
+           LCD_print_string(10,200,message,ILI9341_RED,ILI9341_BLUE);
+           while(1){
+               ;
+           }
+       }
+       if (_CP0_GET_COUNT() > 1200000){
+           _CP0_SET_COUNT(0);
+           imuRead(0b1101011, 0x20, rawData, 14);
+           
+           
+       }
+       
+       
+       }
    }
 
     return (EXIT_SUCCESS);
