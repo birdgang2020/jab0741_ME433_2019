@@ -157,9 +157,11 @@ int main() {
        }
        if (_CP0_GET_COUNT() > 1200000){
            _CP0_SET_COUNT(0);
-           imuRead(0b1101011, 0x20, rawData, 14);
+           I2CmultipleRead(0b1101011, 0x20, rawData, 14);
            
-           
+           int i=0;
+           for(i;i<7;i++){
+               data[i]= (rawData[(i*2)+1] <<8 | rawData[i*2]);      
        }
        
        
