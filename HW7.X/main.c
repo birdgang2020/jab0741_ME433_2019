@@ -51,20 +51,20 @@ unsigned char getExpander(){
 
 void I2CmultipleRead(unsigned char add, unsigned char reg, unsigned char* data, int length){
     i2c_master_start();
-    i2c_master_send(0b1101011<<1|0);
+    i2c_master_send(add << 1 | 0);
     i2c_master_send(reg);
     i2c_master_restart();
-    i2c_master_send(0b1101011<<1|1);
-    int i=0;
-    while(i< (length-1)){
-        data[i]=i2c_master_recv();
-        i2c_master_ack();
+    i2c_master_send(add << 1 | 1);
+    int i = 0;
+    while (i < (length - 1)) {
+        data[i] = i2c_master_recv();
+        i2c_master_ack(0);
         i++;
     }
-    data[i]=i2c_master_recv();
-    i2c_master_ack();
+    data[i] = i2c_master_recv();
+    i2c_master_ack(1);
     i2c_master_stop();
-} 
+}
 
 
 //FROM HW6
@@ -93,9 +93,9 @@ void LCD_print_string(short x,short y,char* str,char color1,char color2){
 
 }
 void LCD_progress_bar(short x,short y,short length,short height,char color){
-    int i=0,j=0;
-    for(i;i<length;i++){
-        for(j;j<height;j++){
+    int i,j;
+    for(i=0;i<length;i++){
+        for(j=0;j<height;j++){
             LCD_drawPixel(x+i,y+j,color);
         }
     }
@@ -123,9 +123,9 @@ int main() {
     SPI1_init();
     LCD_init();
     __builtin_enable_interrupts();
-    LATAbits.LATA4=1;
+
   
-    LCD_clearScreen(ILI9341_WHITE);
+    LCD_clearScreen(ILI9341_BLACK);
 
     
     
@@ -136,20 +136,16 @@ int main() {
     setExpander(0x12,0b00000100);
     
    char message[26];
-   int my_int=10;
-   unsigned char rawData[14];
-   short data[7];
+   unsigned char rawData[6];
+   short data[3];
    
-   
-   LCD_progress_bar(14, 87, 100, 6,ILI9341_PURPLE );
-    LCD_progress_bar(22, 150, 100, 6,ILI9341_RED );
-    LCD_progress_bar(30,200,100,6,ILI9341_BLUE);
+    
     int horiz;
     int vert;
 
    while(1){
        if(getExpander() != 0x69 ){
-           sprintf(message,"Not reading who am i")
+           sprintf(message,"Not reading who am i");
            LCD_print_string(10,200,message,ILI9341_RED,ILI9341_BLUE);
            while(1){
                ;
@@ -157,16 +153,56 @@ int main() {
        }
        if (_CP0_GET_COUNT() > 1200000){
            _CP0_SET_COUNT(0);
-           I2CmultipleRead(0b1101011, 0x20, rawData, 14);
-           
+           I2CmultipleRead(0b1101011, 0x28, rawData, 6);
            int i=0;
-           for(i;i<7;i++){
-               data[i]= (rawData[(i*2)+1] <<8 | rawData[i*2]);      
+
+           for(i;i<=2;i++){
+               data[i] = (rawData[i*2 + 1] << 8) | rawData[i*2];      
        }
-       
-       
+            
+            sprintf(message, "x: %d    z: %d", data[0], data[2]);
+            LCD_print_string(1, 1, message, ILI9341_WHITE, ILI9341_BLACK); 
+            
+           horiz = -1*data[0]*32/16000;
+           vert = (32*(data[2]+16000)/16000);
+           
+            sprintf(message, "x_adj %d z_adj %d  ", horiz, vert);
+            LCD_print_string(100, 220, message, ILI9341_RED, ILI9341_GREEN);
+            
+            
+             if(horiz > 3) {
+                LCD_progress_bar(14, 87, 47, 6, ILI9341_WHITE);
+                LCD_progress_bar(67, 87, horiz-3,6, ILI9341_RED);
+                LCD_progress_bar(67+horiz-3, 87, 50-horiz, 6, ILI9341_WHITE);
+            }
+            else if (horiz < -3) {
+                LCD_progress_bar(14, 87, 50+horiz, 6, ILI9341_WHITE);
+                LCD_progress_bar(61+horiz+3, 87, -1* horiz, 6, ILI9341_RED);
+                LCD_progress_bar(68, 87, 47, 6, ILI9341_WHITE);
+            }
+            else {
+                LCD_progress_bar(14, 87, 48, 6, ILI9341_WHITE);
+                LCD_progress_bar(68, 87, 46, 6, ILI9341_WHITE);
+            }
+ 
+            if(vert > 3) {
+                LCD_progress_bar(62, 40, 6, 47, ILI9341_WHITE);
+                LCD_progress_bar(62, 93, 6, vert-3, ILI9341_RED);
+                LCD_progress_bar(62, 93+vert-3, 6, 50-vert, ILI9341_WHITE);
+            }
+            else if (vert < -3) {
+                LCD_progress_bar(62, 40, 6, 50+vert, ILI9341_WHITE);
+                LCD_progress_bar(62, 87+vert+3, 6, -1*vert, ILI9341_RED);
+                LCD_progress_bar(62, 93, 6, 47, ILI9341_WHITE);
+            }
+            else {
+                LCD_progress_bar(62, 40, 6, 47, ILI9341_WHITE);
+                LCD_progress_bar(62, 93, 6, 47, ILI9341_WHITE);
+            }
        }
    }
+         
+
 
     return (EXIT_SUCCESS);
 }
