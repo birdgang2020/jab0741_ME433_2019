@@ -138,7 +138,7 @@ int main() {
    char message[26];
    unsigned char rawData[6];
    short data[3];
-   
+
     
     int horiz;
     int vert;
@@ -160,11 +160,11 @@ int main() {
                data[i] = (rawData[i*2 + 1] << 8) | rawData[i*2];      
        }
             
-            sprintf(message, "x: %d    z: %d", data[0], data[2]);
+            sprintf(message, "x: %d    z: %d", data[0], data[1]);
             LCD_print_string(1, 1, message, ILI9341_WHITE, ILI9341_BLACK); 
             
            horiz = -1*data[0]*32/16000;
-           vert = (32*(data[2]+16000)/16000);
+           vert = data[1]*32/16000;
            
             sprintf(message, "x_adj %d z_adj %d  ", horiz, vert);
             LCD_print_string(100, 220, message, ILI9341_RED, ILI9341_GREEN);
@@ -172,12 +172,12 @@ int main() {
             
              if(horiz > 3) {
                 LCD_progress_bar(14, 87, 47, 6, ILI9341_WHITE);
-                LCD_progress_bar(67, 87, horiz-3,6, ILI9341_RED);
+                LCD_progress_bar(67, 87, horiz-3,6, ILI9341_BLUE);
                 LCD_progress_bar(67+horiz-3, 87, 50-horiz, 6, ILI9341_WHITE);
             }
             else if (horiz < -3) {
                 LCD_progress_bar(14, 87, 50+horiz, 6, ILI9341_WHITE);
-                LCD_progress_bar(61+horiz+3, 87, -1* horiz, 6, ILI9341_RED);
+                LCD_progress_bar(61+horiz+3, 87, -1* horiz, 6, ILI9341_BLUE);
                 LCD_progress_bar(68, 87, 47, 6, ILI9341_WHITE);
             }
             else {
@@ -187,12 +187,12 @@ int main() {
  
             if(vert > 3) {
                 LCD_progress_bar(62, 40, 6, 47, ILI9341_WHITE);
-                LCD_progress_bar(62, 93, 6, vert-3, ILI9341_RED);
+                LCD_progress_bar(62, 93, 6, vert-3, ILI9341_BLUE);
                 LCD_progress_bar(62, 93+vert-3, 6, 50-vert, ILI9341_WHITE);
             }
             else if (vert < -3) {
                 LCD_progress_bar(62, 40, 6, 50+vert, ILI9341_WHITE);
-                LCD_progress_bar(62, 87+vert+3, 6, -1*vert, ILI9341_RED);
+                LCD_progress_bar(62, 87+vert+3, 6, -1*vert, ILI9341_BLUE);
                 LCD_progress_bar(62, 93, 6, 47, ILI9341_WHITE);
             }
             else {
