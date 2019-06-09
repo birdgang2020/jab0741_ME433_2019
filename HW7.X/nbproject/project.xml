@@ -14,6 +14,7 @@
             <make-dep-projects/>
             <sourceRootList>
                 <sourceRootElem>../HW6/HW6_jab0741.X</sourceRootElem>
+                <sourceRootElem>../HW5/HW5_jab0741.X</sourceRootElem>
             </sourceRootList>
             <confList>
                 <confElem>

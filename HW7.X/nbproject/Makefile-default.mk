@@ -57,17 +57,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=../HW6/HW6_jab0741.X/ili9341.c main.c
+SOURCEFILES_QUOTED_IF_SPACED=../HW6/HW6_jab0741.X/ili9341.c main.c ../HW5/HW5_jab0741.X/i2c_master_noint.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/_ext/2040641878/ili9341.o ${OBJECTDIR}/main.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/_ext/2040641878/ili9341.o.d ${OBJECTDIR}/main.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/_ext/2040641878/ili9341.o ${OBJECTDIR}/main.o ${OBJECTDIR}/_ext/1751242328/i2c_master_noint.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/_ext/2040641878/ili9341.o.d ${OBJECTDIR}/main.o.d ${OBJECTDIR}/_ext/1751242328/i2c_master_noint.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/_ext/2040641878/ili9341.o ${OBJECTDIR}/main.o
+OBJECTFILES=${OBJECTDIR}/_ext/2040641878/ili9341.o ${OBJECTDIR}/main.o ${OBJECTDIR}/_ext/1751242328/i2c_master_noint.o
 
 # Source Files
-SOURCEFILES=../HW6/HW6_jab0741.X/ili9341.c main.c
+SOURCEFILES=../HW6/HW6_jab0741.X/ili9341.c main.c ../HW5/HW5_jab0741.X/i2c_master_noint.c
 
 
 CFLAGS=
@@ -118,6 +118,12 @@ ${OBJECTDIR}/main.o: main.c  nbproject/Makefile-${CND_CONF}.mk
 	@${RM} ${OBJECTDIR}/main.o 
 	@${FIXDEPS} "${OBJECTDIR}/main.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG   -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/main.o.d" -o ${OBJECTDIR}/main.o main.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD) 
 	
+${OBJECTDIR}/_ext/1751242328/i2c_master_noint.o: ../HW5/HW5_jab0741.X/i2c_master_noint.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/_ext/1751242328" 
+	@${RM} ${OBJECTDIR}/_ext/1751242328/i2c_master_noint.o.d 
+	@${RM} ${OBJECTDIR}/_ext/1751242328/i2c_master_noint.o 
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1751242328/i2c_master_noint.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG   -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1751242328/i2c_master_noint.o.d" -o ${OBJECTDIR}/_ext/1751242328/i2c_master_noint.o ../HW5/HW5_jab0741.X/i2c_master_noint.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD) 
+	
 else
 ${OBJECTDIR}/_ext/2040641878/ili9341.o: ../HW6/HW6_jab0741.X/ili9341.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/2040641878" 
@@ -130,6 +136,12 @@ ${OBJECTDIR}/main.o: main.c  nbproject/Makefile-${CND_CONF}.mk
 	@${RM} ${OBJECTDIR}/main.o.d 
 	@${RM} ${OBJECTDIR}/main.o 
 	@${FIXDEPS} "${OBJECTDIR}/main.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/main.o.d" -o ${OBJECTDIR}/main.o main.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD) 
+	
+${OBJECTDIR}/_ext/1751242328/i2c_master_noint.o: ../HW5/HW5_jab0741.X/i2c_master_noint.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/_ext/1751242328" 
+	@${RM} ${OBJECTDIR}/_ext/1751242328/i2c_master_noint.o.d 
+	@${RM} ${OBJECTDIR}/_ext/1751242328/i2c_master_noint.o 
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1751242328/i2c_master_noint.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1751242328/i2c_master_noint.o.d" -o ${OBJECTDIR}/_ext/1751242328/i2c_master_noint.o ../HW5/HW5_jab0741.X/i2c_master_noint.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD) 
 	
 endif
 

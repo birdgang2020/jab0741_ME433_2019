@@ -20,6 +20,36 @@
 /*
  * 
  */
+
+//FROM HW5
+void initExpander(){
+    ANSELBbits.ANSB2 = 0;//Turn off analog for B2
+    ANSELBbits.ANSB3 = 0;//Turn off analog for B3
+    i2c_master_setup();
+}
+
+void setExpander(char pin,char level){
+    i2c_master_start();
+    i2c_master_send(0b0100000<<1|0);
+    i2c_master_send(pin);
+    i2c_master_send(level);
+    i2c_master_stop();
+}
+
+unsigned char getExpander(){
+    i2c_master_start();
+    i2c_master_send(0b0100000<<1|0);
+    i2c_master_send(0x9);
+    i2c_master_restart();
+    i2c_master_send(0b0100000<<1|1);
+    unsigned char r = i2c_master_recv();
+    i2c_master_ack(1);
+    i2c_master_stop();
+    return r;
+}
+
+
+//FROM HW6
 void LCD_print_letter(short x,short y,char letter,char color1,char color2 ){
     letter=letter - 0x20;
     int i=0;
