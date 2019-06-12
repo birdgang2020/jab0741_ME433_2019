@@ -1,0 +1,22 @@
+﻿Unigraphics NX V11.0 / 2D Exchange
+
+Reading part: D:\ME433\jab0741_ME433_2019\HW13_14\HW13_Side1_v1.prt
+
+Could not load the following components:
+
+Elapsed time   :    0 minutes,  3 seconds
+Actual CPU Time:    0 minutes,  4 seconds
+
+INFO-
+INFO-		Unigraphics Version NX V11.0 to AutoCAD 2004
+INFO-		
+INFO-
+INFO-		Running UGTODXF Translator .....
+INFO-
+INFO-		Start of Translation: Wed Jun 12 00:41:44 2019
+INFO-
+
+ *** Failed to load NX part file. This prt file does not exist OR NX prt file may be from higher version ***: C:\Users\jbera\AppData\Local\Temp\jber28808517yygr.prt
+
+INFO-		End of Translation: Wed Jun 12 00:41:44 2019
+INFO-		Translation CPU time: 0 m, 0 sINFO-

@@ -1,0 +1,62 @@
+﻿Unigraphics NX V11.0 / 2D Exchange
+
+Reading part: D:\ME433\jab0741_ME433_2019\HW13_14\HW13_Side1_v1.prt
+
+Could not load the following components:
+
+Error loading file: D:\ME433\jab0741_ME433_2019\HW13_14\HW13_Side1_v1.prt, status code = 69
+INFO-
+INFO-		Unigraphics Version NX V11.0 to AutoCAD 2013
+INFO-		
+INFO-
+INFO-		Running UGTODXF Translator .....
+INFO-
+INFO-		Start of Translation: Wed Jun 12 00:43:39 2019
+INFO-
+
+ *** Failed to load NX part file. This prt file does not exist OR NX prt file may be from higher version ***: C:\Users\jbera\AppData\Local\Temp\jber28808517yyh2.prt
+
+INFO-		End of Translation: Wed Jun 12 00:43:39 2019
+INFO-		Translation CPU time: 0 m, 0 sINFO-
+INFO-
+INFO-		Unigraphics Version NX V11.0 to AutoCAD 2013
+INFO-		
+INFO-
+INFO-		Running UGTODXF Translator .....
+INFO-
+INFO-		Start of Translation: Wed Jun 12 00:44:22 2019
+INFO-
+STATUS-		Converting D:\ME433\jab0741_ME433_2019\HW13_14\HW13_Side1_v1.prt
+STATUS-
+SUMMARY-
+SUMMARY-	Summary of Unigraphics Input Entities
+SUMMARY-	For Unigraphics File: D:\ME433\jab0741_ME433_2019\HW13_14\HW13_Side1_v1.prt
+SUMMARY-	------------------------------------------------------------------
+SUMMARY-	Entity Type					Count
+SUMMARY-	------------------------------------------------------------------
+SUMMARY-	Line .....................................:	99
+SUMMARY-	Point ....................................:	1
+SUMMARY-	Circle ...................................:	6
+SUMMARY-	Solid Edges............................:	76
+SUMMARY-	------------------------------------------------------------------
+SUMMARY-	Total ....................................:	182
+SUMMARY-	------------------------------------------------------------------
+SUMMARY-
+STATUS-
+INFO-
+INFO-		Writing File: D:\ME433\jab0741_ME433_2019\HW13_14\HW13_Side1_v1.dxf
+SUMMARY-	Summary of AutoCAD Output Entities
+SUMMARY-	------------------------------------------------------------------
+SUMMARY-	Entity Type					Count
+SUMMARY-	------------------------------------------------------------------
+SUMMARY-	Circle ...................................:	6
+SUMMARY-	Point ....................................:	1
+SUMMARY-	Line .....................................:	99
+SUMMARY-	Layout ...................................:	6
+SUMMARY-	------------------------------------------------------------------
+SUMMARY-	Total ....................................:	112
+SUMMARY-	------------------------------------------------------------------
+SUMMARY-
+INFO-
+INFO-		End of Translation: Wed Jun 12 00:44:23 2019
+INFO-		Translation CPU time: 0 m, 1 sINFO-
