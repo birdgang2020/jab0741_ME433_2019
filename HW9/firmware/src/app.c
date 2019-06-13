@@ -63,7 +63,7 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 // Section: Global Data Definitions
 // *****************************************************************************
 // *****************************************************************************
-#define T_CS LATBbits.LATB9 
+
 
 /* Application Data
 
@@ -96,42 +96,43 @@ APP_DATA appData;
 // *****************************************************************************
 // *****************************************************************************
 
-
 /* TODO:  Add any necessary local functions.
 */
-
+    
 void XPT2046_read(unsigned short *x, unsigned short *y, unsigned int *z){
     char ztemp;
-    
-    T_CS=0;
+
+    LATAbits.LATA4=0;
     spi_io(0b11010001);
     char x1temp =spi_io(0x00);
     char xtemp =((x1temp<<8)|(spi_io(0x00)))>>3;
-    T_CS=1;
-    
-    T_CS=0;
+    LATAbits.LATA4=1;
+
+    /*
+    LATAbits.LATA4=0;
     spi_io(0b10010001);
     char y1temp =spi_io(0x00);
     char ytemp =((y1temp<<8)|(spi_io(0x00)))>>3;
-    T_CS=1;
+    LATAbits.LATA4=1;
     
-    T_CS=0;
+    LATAbits.LATA4=0;
     spi_io(0b10110001);
     char z1_temp =spi_io(0x00);
     char z1temp =((z1_temp<<8)|(spi_io(0x00)))>>3;
-    T_CS=1;
+    LATAbits.LATA4=1;
     
-    T_CS=0;
+    LATAbits.LATA4=0;
     spi_io(0b11010001);
     char z2_temp =spi_io(0x00);
     char z2temp =((z2_temp<<8)|(spi_io(0x00)))>>3;
-    T_CS=1;
+    LATAbits.LATA4=1;
     
     ztemp=z1temp-z2temp+4095;
-
+*/
     *x=xtemp;
-    *y=ytemp;
-    *z=ztemp;
+   // *y=ytemp;
+   // *z=ztemp;
+
 }
 
 // *****************************************************************************
@@ -192,13 +193,7 @@ void APP_Tasks ( void )
             ANSELB = 0;
             ANSELA = 0;
             // do your TRIS and LAT commands here  
-            TRISBbits.TRISB9=1;
-            TRISBbits.TRISB4=1;
             TRISAbits.TRISA4=0;
-            
-            LATAbits.LATA4=0;
-            
-            
             
             SPI1_init();
             LCD_init();
@@ -212,12 +207,14 @@ void APP_Tasks ( void )
 
         case APP_STATE_SERVICE_TASKS:
         {
+
             unsigned short x, y; int z; XPT2046_read(&x, &y, &z);
             LCD_clearScreen(ILI9341_WHITE);
             char str[20];
             sprintf(str,"x:%d y:%d z:%d ",x,y,z);
             LCD_print_string(100,100,str,ILI9341_BLUE,ILI9341_WHITE);
             break;
+
         }
 
         /* TODO: implement your application state machine.*/
