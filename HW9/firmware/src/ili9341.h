@@ -5,6 +5,8 @@
 #ifndef ILI9341_H__
 #define ILI9341_H__
 
+#define CST LATBbits.LATB5
+
 // Color definitions
 #define ILI9341_BLACK       0x0000  ///<   0,   0,   0
 #define ILI9341_NAVY        0x000F  ///<   0,   0, 123

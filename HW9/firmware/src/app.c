@@ -98,41 +98,47 @@ APP_DATA appData;
 
 /* TODO:  Add any necessary local functions.
 */
+int count=0;
+void XPT2046_read(int *z, unsigned short *x, unsigned short *y){
     
-void XPT2046_read(unsigned short *x, unsigned short *y, unsigned int *z){
-    char ztemp;
-
-    LATAbits.LATA4=0;
-    spi_io(0b11010001);
-    char x1temp =spi_io(0x00);
-    char xtemp =((x1temp<<8)|(spi_io(0x00)))>>3;
-    LATAbits.LATA4=1;
-
-    /*
-    LATAbits.LATA4=0;
-    spi_io(0b10010001);
-    char y1temp =spi_io(0x00);
-    char ytemp =((y1temp<<8)|(spi_io(0x00)))>>3;
-    LATAbits.LATA4=1;
+    CST = 1; // CS starts high
+    unsigned short z1, z2;
     
-    LATAbits.LATA4=0;
-    spi_io(0b10110001);
-    char z1_temp =spi_io(0x00);
-    char z1temp =((z1_temp<<8)|(spi_io(0x00)))>>3;
-    LATAbits.LATA4=1;
+    unsigned char r1, r2;
+    unsigned short t1, t2;
+  
+    CST = 0;
+    spi_io(0b10110001); // Z1
+    r1 = spi_io(0x00);
+    r2 = spi_io(0x00);
+    CST = 1;
+    z1 = ((r1<<8)|r2)>>3;
     
-    LATAbits.LATA4=0;
-    spi_io(0b11010001);
-    char z2_temp =spi_io(0x00);
-    char z2temp =((z2_temp<<8)|(spi_io(0x00)))>>3;
-    LATAbits.LATA4=1;
+    CST = 0;
+    spi_io(0b11000001); // Z2
+    r1 = spi_io(0x00);
+    r2 = spi_io(0x00);
+    CST = 1;
+    z2 = ((r1<<8)|r2)>>3;
     
-    ztemp=z1temp-z2temp+4095;
-*/
-    *x=xtemp;
-   // *y=ytemp;
-   // *z=ztemp;
-
+    CST = 0;
+    spi_io(0b10010001); // Y
+    r1 = spi_io(0x00);
+    r2 = spi_io(0x00);
+    CST = 1;
+    t1 = ((r1<<8)|r2)>>3;
+    
+    CST = 0;
+    spi_io(0b11010001); // X
+    r1 = spi_io(0x00);
+    r2 = spi_io(0x00);
+    CST = 1;
+    t2 = ((r1<<8)|r2)>>3;
+   
+    
+    *z = z1 - z2 + 4095;
+    *y = t1;
+    *x=t2;
 }
 
 // *****************************************************************************
@@ -194,9 +200,12 @@ void APP_Tasks ( void )
             ANSELA = 0;
             // do your TRIS and LAT commands here  
             TRISAbits.TRISA4=0;
+            TRISBbits.TRISB5 = 0; // CST is B5
             
             SPI1_init();
+
             LCD_init();
+            LCD_clearScreen(ILI9341_BLACK);
             if (appInitialized)
             {
             
@@ -204,21 +213,53 @@ void APP_Tasks ( void )
             }
             break;
         }
-
+        
         case APP_STATE_SERVICE_TASKS:
         {
+            
+            unsigned short x, y; int z;
+            XPT2046_read(&z,&x,&y);
 
-            unsigned short x, y; int z; XPT2046_read(&x, &y, &z);
-            LCD_clearScreen(ILI9341_WHITE);
-            char str[20];
-            sprintf(str,"x:%d y:%d z:%d ",x,y,z);
-            LCD_print_string(100,100,str,ILI9341_BLUE,ILI9341_WHITE);
-            break;
+            char str[30];
 
-        }
-
-        /* TODO: implement your application state machine.*/
+            while(_CP0_GET_COUNT()<12000000){
+                ;
+            }
+            _CP0_SET_COUNT(0);
+            int x_adj=(x-400)/14;
+            int y_adj;
+            int z_adj;
+            if(y==0){
+                
+            }
+            
+            else{
+                y_adj=340-(y-250)/10.5;
+            }
+            if(z>400){
+                z_adj=1;
+             
+            }
+            else{
+                z_adj=0;
+            }
+            sprintf(str,"x adj:%d y adj:%d",x_adj,y_adj);
+            LCD_print_string(0,40,str,ILI9341_WHITE,ILI9341_BLACK);
+            _CP0_SET_COUNT(0);
         
+        
+        LCD_progress_bar(150,150,10,10,ILI9341_WHITE);
+        LCD_progress_bar(200,200,10,10,ILI9341_GREEN);
+        if((x_adj>140&& x_adj<170)&&(y_adj>140 && y_adj<170)){
+            count+=1;
+        }
+        if((x_adj>180 && x_adj<220)&&(y_adj>180 && y_adj<220)){
+            count-=1;
+        }
+        sprintf(str,"COUNT: %d",count);
+        LCD_print_string(0,200,str,ILI9341_WHITE,ILI9341_BLACK);
+        /* TODO: implement your application state machine.*/
+        }
 
         /* The default state should never be executed. */
         default:
