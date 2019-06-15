@@ -21,13 +21,15 @@
  * 
  */
     void __ISR(_TIMER_2_VECTOR, IPL2SOFT) Current_control_ISR(void) {
+        OC1RS=
   
-  IFS0bits.T2IF = 0;
+    IFS0bits.T2IF = 0;
   
 }
     void __ISR(_TIMER_2_VECTOR, IPL2SOFT) Current_control_ISR(void) {
-  
-  IFS0bits.T2IF = 0;
+        
+        LATAINV=0b10000;
+    IFS0bits.T3IF = 0;
   
 }
     
@@ -111,8 +113,6 @@ int main() {
    __builtin_enable_interrupts();  // INT step 7: enable interrupts at CPU
     
 
-    LATAbits.LATA4=1;
-  
     LCD_clearScreen(ILI9341_WHITE);
 
    char message[26];
