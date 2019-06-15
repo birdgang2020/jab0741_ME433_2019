@@ -20,19 +20,27 @@
 /*
  * 
  */
-    void __ISR(_TIMER_2_VECTOR, IPL2SOFT) Current_control_ISR(void) {
-        OC1RS=
-  
-    IFS0bits.T2IF = 0;
-  
-}
-    void __ISR(_TIMER_2_VECTOR, IPL2SOFT) Current_control_ISR(void) {
+    void __ISR(_TIMER_3_VECTOR, IPL5SOFT) TIMER3(void) {
+        if(OC1RS>0){
+    OC1RS -=24;
+        }
         
-        LATAINV=0b10000;
     IFS0bits.T3IF = 0;
   
 }
     
+    char message [40];
+    char array1[1]={"a"};
+    char array2[1]={"b"};
+    char array3[1]={"c"};
+    LCD_display(const char* array,int x,int y){
+        int i=0;
+        for(i;i<sizeof(array);i++){
+            char c=((array[i]>>5) | 0b00000000);
+            sprintf(message,"%c",c);
+            LCD_print_string(x,y,message,ILI9341_WHITE,ILI9341_BLACK);
+        }
+    }
     
     void Timer2_INIT(){
     T2CONbits.TCKPS = 0; // Timer2 prescaler N=1 (1:1)
@@ -43,7 +51,7 @@
 
     OC1CONbits.OCM = 0b110; // PWM mode without fault pin; other OC1CON bits are defaults
 
-    OC1RS = 0; // duty cycle
+    OC1RS = 1000; // duty cycle
 
     OC1R = 0; // initialize before turning OC1 on; afterward it is read-only
 
@@ -55,23 +63,14 @@
     }
     
     void Timer3_INIT(){
-    T3CONbits.TCKPS = 0; // Timer2 prescaler N=1 (1:1)
+    T3CONbits.TCKPS = 0b111; // Timer2 prescaler N=1 (1:1)
 
-    PR3 = 2399; // PR = PBCLK / N / desiredF - 1
+    PR3 =1875 ; // PR = PBCLK / N / desiredF - 1
 
     TMR3 = 0; // initial TMR2 count is 0
 
-    OC2CONbits.OCM = 0b110; // PWM mode without fault pin; other OC1CON bits are defaults
-
-    OC2RS = 0; // duty cycle
-
-    OC2R = 0; // initialize before turning OC1 on; afterward it is read-only
-
     T3CONbits.ON = 1; // turn on Timer2
-
-    OC2CONbits.ON = 1; // turn on OC1
-    
-           
+     
     }
 
 int main() {
@@ -98,38 +97,33 @@ int main() {
     LATAbits.LATA4=0;
     SPI1_init();
     LCD_init();
+    Timer2_INIT();
+    Timer3_INIT();
+    
 //Timer4 and Timer5 ISRs
-  IPC2bits.T2IP = 3;              // INT step 4: priority
-  IPC3bits.T3IP=5;
-  IPC2bits.T2IS = 0;              //             subpriority
-  IPC3bits.T3IS=0;
-  IFS0bits.T2IF = 0;              // INT step 5: clear interrupt flag
-  IFS0bits.T3IF=0;
-  IEC0bits.T2IE = 1;              // INT step 6: enable interrupt
+            // INT step 4: priority
+  IPC3bits.T3IP=5;        //             subpriority
+  IPC3bits.T3IS=0;           // INT step 5: clear interrupt flag
+  IFS0bits.T3IF=0;            // INT step 6: enable interrupt
   IEC0bits.T3IE =1;
 
 
 
    __builtin_enable_interrupts();  // INT step 7: enable interrupts at CPU
-    
-
-    LCD_clearScreen(ILI9341_WHITE);
-
-   char message[26];
-   int my_int=10;
-
-
-   
-   int count=0;
-   u_int last_tick=0;
-   u_int current_tick=0;
-
+   LCD_clearScreen(ILI9341_BLACK);
+ 
+  LCD_display(array1,100,100);
+  LCD_display(array2,150,100);
+  LCD_display(array3,200,200);
    while(1){
-
-
-    return (EXIT_SUCCESS);
+   if (_CP0_GET_COUNT()>48000000){
+       OC1RS=2399;
+       LATAINV=0b10000;
+       _CP0_SET_COUNT(0);
+   }
 }
 }
+
 
 
 
