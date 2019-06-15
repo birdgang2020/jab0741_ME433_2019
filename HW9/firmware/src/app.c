@@ -105,7 +105,7 @@ void XPT2046_read(int *z, unsigned short *x, unsigned short *y){
     unsigned short z1, z2;
     
     unsigned char r1, r2;
-    unsigned short t1, t2;
+    unsigned short x1, y1;
   
     CST = 0;
     spi_io(0b10110001); // Z1
@@ -126,19 +126,19 @@ void XPT2046_read(int *z, unsigned short *x, unsigned short *y){
     r1 = spi_io(0x00);
     r2 = spi_io(0x00);
     CST = 1;
-    t1 = ((r1<<8)|r2)>>3;
+    y1 = ((r1<<8)|r2)>>3;
     
     CST = 0;
     spi_io(0b11010001); // X
     r1 = spi_io(0x00);
     r2 = spi_io(0x00);
     CST = 1;
-    t2 = ((r1<<8)|r2)>>3;
+    x1 = ((r1<<8)|r2)>>3;
    
     
     *z = z1 - z2 + 4095;
-    *y = t1;
-    *x=t2;
+    *y = y1;
+    *x=x1;
 }
 
 // *****************************************************************************
